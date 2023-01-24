@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hothotlearner</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+</head>
+<body>
+    <div class="blogShower">
+       <h1 class="notSelected">you haven't selected any thing yet..</h1>
+    </div>
+
+    <%-include('./partials/header.ejs'); %>
+    
+    <main>
+       
+        <section class="main_left">
+            <div class="search_container">
+                <input type="text" class="search_input" placeholder="type here to search ....">
+                <button id="searchBTN">search</button>
+                <select name="sort" id="order">
+                    <option value="1">latest</option>
+                    <option value="0">oldest</option>
+                </select>
+            </div>
+            <div class="content" >
+                
+               <!-- maximize and minize content -->
+                
+
+                   
+               </div>
+               <label for="checkbox" class="commentOnOff">see comments</label>
+
+
+
+
+            </div>
+<div class="pagination">
+    
+</div>
+        </section>
+        <section class="main_right">
+            <div class="category">
+                <h1>Search from category</h1>
+                <ul>
+                    <div class="categoryList">All</div>
+                    <div class="categoryList">life</div>
+                    <div class="categoryList">education</div>
+                    <div class="categoryList">school</div>
+                    <div class="categoryList">work</div>
+                </ul>
+                <h1>Ads section:</h1>
+                <img src="https://picsum.photos/150/100" crossorigin="anonymous" alt="not found">
+                <ul>
+                    <li>
+                        <a href="">https://locahldsjsd</a>
+                    </li>
+                    <li>
+                        <a href="">dsfasdfewr34234r3</a>
+                    </li>
+                    <li>
+                        <a href="">dsfasdfewr34234r3</a>
+                    </li>
+                    <li>
+                        <a href="">tisfkldsfjlkd4r3</a>
+                    </li>
+                    <li>
+                        <a href="">dsfasdfewr34234r3</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </section>
+        <button  id="toggleBlogShower">Maximize</button>
+    </main>
+    <%-include('partials/footer.ejs');%>
+      <label id="end"></label>
+    <script src="main.js"></script>
+</body>
+</html>

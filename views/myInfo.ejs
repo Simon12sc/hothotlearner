@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myInfo</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <style> 
+    .myInfo{
+        width:100vw;
+        display:flex;
+        justify-content:center;
+    }
+    main{
+        padding: 0;
+    }
+    footer{
+        width:100vw;
+        margin:0px;
+    }
+    form{
+        width:360px;
+    }
+    .box{
+        width: 100%;
+        padding: 7px;
+        display: flex;
+        flex-direction: column;
+    }
+    .box>input{
+        margin-bottom: 10px;
+        background:rgba(10, 0, 0, 0.1);
+        border:none;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .box>label{
+
+        color: #070069;
+    }
+
+    .box>input:focus{
+        background: white;
+        border: 1px solid #070069;
+        outline: none;
+    }
+    .box> button{
+        width: 100%;
+        margin: 5px auto;
+        height: 35px;
+        background: #070069;
+        margin-left: 0;
+        border: none;
+        color: white;
+    }
+    .box> button:hover{
+        background: #0a018d;
+        cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <%-include('./partials/header.ejs')%>
+    <main>
+
+
+        <div class="myInfo">
+            <h1>loading..... </h1>
+        </div>
+        
+        
+    </main>
+    
+    
+    <%-include('./partials/footer.ejs')%>
+<script src="myInfo.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>
