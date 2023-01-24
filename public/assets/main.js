@@ -13,8 +13,6 @@ let tog=false;
         const categoryList=document.getElementsByClassName("categoryList");
         let userId = undefined;
         const order=document.getElementById("order");
-        
-        const link='http://localhost:8000'
         let page=1;
         let limit=15;
 
@@ -56,7 +54,7 @@ function categorySearch(data){
 
         
         async function showBlog(id){
-            let res=await fetch(`${link}/api/blog/${id}`);
+            let res=await fetch(`/api/blog/${id}`);
             let data=await res.json();
             toggleBlogShower.click();
               
@@ -86,7 +84,7 @@ function categorySearch(data){
                 <h1>${data.message.title}</h1>
                 <p>${getAgo( data.message.createdAt)}</p>
                     <p>by ${data.message.User.name}-${data.message.User.role}</p>
-                    <div class="blog_main_cover" style="background-image:url('${link}/image/${data.message.cover_image}');">
+                    <div class="blog_main_cover" style="background-image:url('/image/${data.message.cover_image}');">
                         
                     </div>
                     </div>
@@ -167,7 +165,7 @@ function categorySearch(data){
         
             data.forEach(element => {
                 contentBox.innerHTML+=`<div class="blog" blog_id="${element.id}">
-                    <div class="blog_cover" style="background-image:url('${link}/image/${element.cover_image}');">
+                    <div class="blog_cover" style="background-image:url('/image/${element.cover_image}');">
                     </div>
                     <label for="date">${getAgo(element.createdAt)}</label> <a id="newPage" href="/blog/${element.id}/${element.title}" >view in new page</a>
                     <div class="blog_bottom">
@@ -217,7 +215,7 @@ function categorySearch(data){
             contentBox.innerHTML="<h1 style=`color:red;`>loading....</h1>"
             const keyword=document.getElementsByClassName("search_input")[0];
             
-            let res=await fetch(`${link}/api/blog/${nextPage}/15/search?title=${keyword.value}&order=${order.value}`);
+            let res=await fetch(`/api/blog/${nextPage}/15/search?title=${keyword.value}&order=${order.value}`);
             let data=await res.json();
             if(!data.success){
                 
@@ -230,7 +228,7 @@ function categorySearch(data){
         }
         
         async function isLoggedIn(){
-            let res=await fetch(`${link}/api/user/me`);
+            let res=await fetch(`/api/user/me`);
             let result = await res.json();
             
             if(result.success){
@@ -250,7 +248,7 @@ function categorySearch(data){
             
             let confirm=window.confirm("are you sure want to logout ?")
             if(!confirm){return}
-            let res=await fetch(`${link}/api/user/logout`);
+            let res=await fetch(`/api/user/logout`);
             let result = await res.json();
             
             if(result.success){
