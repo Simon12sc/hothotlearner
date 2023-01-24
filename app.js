@@ -45,6 +45,7 @@ import userRouter from "./routers/user.router.js";
 import commentRouter from "./routers/comment.router.js";
 import pageRouter from "./routers/page.router.js";
 
+
 app.use("/",pageRouter);
 app.use("/api/blog",blogRouter);
 app.use("/api/user",userRouter);
