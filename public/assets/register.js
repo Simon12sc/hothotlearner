@@ -22,7 +22,7 @@ async function register(){
 
     let data={name:nameTag.value,email:emailTag.value,password:password.value}
     
-    let res=await fetch("http://localhost:8000/api/user/auth/register",{
+    let res=await fetch("/api/user/auth/register",{
         method:'post',
         body:JSON.stringify(data),
         headers:{

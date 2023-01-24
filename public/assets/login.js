@@ -20,7 +20,7 @@
         
                     let data={email:emailTag.value,password:password.value}
                     
-                    let res=await fetch("http://localhost:8000/api/user/auth/login",{
+                    let res=await fetch("/api/user/auth/login",{
                         method:'post',
                         body:JSON.stringify(data),
                         headers:{
