@@ -403,6 +403,10 @@
       .comment_area{
         margin: 20px 0px;
         display: flex;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 90%;
     }
     
     .comment_area button{
@@ -416,10 +420,10 @@
             color: white;
         }
       .commentSection{
+        
         position:fixed;
         color: white;
         width: 43%;
-        min-height: 50%;
         top: 0;
         left: 0;
         z-index: 101;
