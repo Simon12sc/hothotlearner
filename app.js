@@ -15,7 +15,8 @@ app.use(
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          imgSrc: ["'self'", "data:","*"]
+          imgSrc: ["'self'", "data:","*"],
+          scriptSrc:["'self'","https://cdn.ckeditor.com"]
         },
       },
       crossOriginEmbedderPolicy: false,
@@ -44,6 +45,7 @@ import blogRouter from "./routers/blog.router.js";
 import userRouter from "./routers/user.router.js";
 import commentRouter from "./routers/comment.router.js";
 import pageRouter from "./routers/page.router.js";
+
 
 
 app.use("/",pageRouter);

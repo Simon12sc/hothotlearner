@@ -31,8 +31,8 @@ function showMyInfo(myData){
         <input type="text" disabled placeholder="activated or not" value="${myData.isActivated}">
         <label for="email">Joined</label>
         <input type="text" disabled placeholder="logged in date" value="${getAgo(myData.createdAt)}">
-        <button id="changePasswordButton">Change Password</button>
-        <button id="forgotPasswordButton">Forgot Password</button>
+        <button id="changePasswordButton" type="button">Change Password</button>
+        <button id="forgotPasswordButton" type="button">Forgot Password</button>
     </div>
 </form>
     `

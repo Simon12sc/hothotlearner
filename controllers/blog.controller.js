@@ -9,7 +9,10 @@ import User from "../models/user.model.js";
 //Admin can create blog
 const createBlog=expressAsyncHandler( async (req,res,next)=>{
    const {title,shortDescription,description,tags}=req.body;
+   console.log(req.body)
+   console.log(req.file)
    const cover_image=req.file.filename;
+
    if(!title){
     return next(createError(400,"title is required !!"))}
    if(!description){

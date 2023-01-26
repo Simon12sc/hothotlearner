@@ -272,46 +272,10 @@ nav .profile-details i{
 }
 .home-content .sales-boxes .sales-details{
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.sales-boxes .box .title{
-  font-size: 24px;
-  font-weight: 500;
-  /* margin-bottom: 10px; */
-}
-.sales-boxes .sales-details li.topic{
-  font-size: 20px;
-  font-weight: 500;
-}
-.sales-boxes .sales-details li{
-  list-style: none;
-  margin: 8px 0;
-}
-.sales-boxes .sales-details li a{
-  font-size: 18px;
-  color: #333;
-  font-size: 400;
-  text-decoration: none;
-}
-.sales-boxes .box .button{
+  flex-direction: column;
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
 }
-.sales-boxes .box .button a{
-  color: #fff;
-  background: #0A2558;
-  padding: 4px 12px;
-  font-size: 15px;
-  font-weight: 400;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
-.sales-boxes .box .button a:hover{
-  background:  #0d3073;
-}
+
 
 /* Right box */
 .home-content .sales-boxes .top-sales{
@@ -440,4 +404,63 @@ nav .profile-details i{
   }
 }
 
+            #container {
+                width: 1000px;
+                margin: 20px auto;
+            }
+            .ck-editor__editable[role="textbox"] {
+                /* editing area */
+                min-height: 200px;
+            }
+            .ck-content .image {
+                /* block images */
+                max-width: 80%;
+                margin: 20px auto;
+            }
+      
+
+      .createBlog input{
+        width: 100%;
+        height: 50px;
+        padding: 5px;
+        border: none;
+        margin: 10px 0px;
+        margin-bottom: 20px;
+        background: rgb(230, 230, 230);
+      }
+.createBlog label{
+  margin-top: 20px;
+}
+      .createBlog input:focus{
+        outline: none;
+        border: 1px solid black;
+      }
+
+      .createBlog button{
+        height: 50px;
+        width: 100%;
+        background: #000;
+        border:none;
+        color:white;
+        margin: 0px 0px 40px 0px;
+      }
+
+      .createBlog button:hover{
+        background: green;
+        cursor: pointer;
+      }
+      #blogDateList li{
+        list-style-type: none;
+        display: flex;
+        position: relative;
+        flex-wrap: wrap;
+        width: 100%;
+
+         }
+         #blogDateList li div{
+          margin-left:10px;
+          margin-right:10px;
+         }
+
+         
 </style>
