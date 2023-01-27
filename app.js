@@ -56,9 +56,12 @@ app.use("/api/comment",commentRouter);
 app.get("/image/:name",(req,res,next)=>{
     res.sendFile(`${__dirname}/public/cover_images/${req.params.name}`);
 })
-app.get("/showblog.js",()=>{
+
+app.get("/showblog.js",(req,res,next)=>{
   res.type("text/javascript");
   res.sendFile("/assets/showblog.js")});
+
+
 app.use((err,req,res,next)=>{
     const message=err.message || "internal server error";
     const statusCode=err.statusCode || 500;
