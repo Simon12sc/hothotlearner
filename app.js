@@ -59,7 +59,7 @@ app.get("/image/:name",(req,res,next)=>{
 
 app.get("/showblog.js",(req,res,next)=>{
   res.type("text/javascript");
-  res.sendFile("/assets/showblog.js")});
+  res.sendFile(__dirname+"./public/assets/showblog.js")});
 
 
 app.use((err,req,res,next)=>{
