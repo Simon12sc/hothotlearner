@@ -5,7 +5,7 @@ const blogShower=document.getElementsByClassName("blogShower")[0]
 const userProfile=document.getElementsByClassName("userProfile")[0]
 const login_button=document.getElementsByClassName("login_button")[0]
 const user=document.getElementsByClassName("user")[0]
-let userId = undefined;
+let userId = null;
 
 const logout_button=document.getElementsByClassName("logout_button")[0]
 
@@ -25,6 +25,7 @@ function categorySearch(data){
 showBlog(document.getElementById("id").innerText);
 
 async function showBlog(id){
+    console.log(id)
     let res=await fetch(`/api/blog/${id}`);
     let data=await res.json();
       

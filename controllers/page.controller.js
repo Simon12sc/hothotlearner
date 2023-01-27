@@ -25,8 +25,6 @@ export const admin=(req,res,next)=>{
 
 
 export const showBlog=(req,res,next)=>{
-    console.log(req.params.blogId)
-    res.render("showBlog",{
-        blogId:req.params.blogId
-    })
+    console.log(req.params.id)
+    res.render("showBlog",{blogId:req.params.id});
 }

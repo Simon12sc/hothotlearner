@@ -8,6 +8,6 @@ pageRouter.get("/register",registerPage);
 pageRouter.get("/login",loginPage);
 pageRouter.get("/forgot",forgotPage);
 pageRouter.get("/myInfo",myInfo);
-pageRouter.get("/blog/:blogId/:title",showBlog);
+pageRouter.get("/blog/:id/:title",showBlog);
 pageRouter.get("/admin/dashboard", isAuthenticatedUser,authorizeRoles("admin"),admin);
 export default pageRouter;
