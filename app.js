@@ -9,20 +9,20 @@ import * as url from 'url';
     const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 import rateLimit from "express-rate-limit";
-import helmet from "helmet";
-app.use(
-    helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["'self'"],
-          imgSrc: ["'self'", "data:","*"],
-          scriptSrc:["'self'","https://cdn.ckeditor.com"]
-        },
-      },
-      crossOriginEmbedderPolicy: false,
-      crossOriginResourcePolicy: false,
-    })
-  );
+// import helmet from "helmet";
+// app.use(
+//     helmet({
+//       contentSecurityPolicy: {
+//         directives: {
+//           defaultSrc: ["'self'"],
+//           imgSrc: ["'self'", "data:","*"],
+//           scriptSrc:["'self'","https://cdn.ckeditor.com"]
+//         },
+//       },
+//       crossOriginEmbedderPolicy: false,
+//       crossOriginResourcePolicy: false,
+//     })
+//   );
 export const limiter = rateLimit({
         windowMs: 15 * 60 * 1000, // 15 minutes
         max: 1000, // limit each IP to 100 requests per windowMs
@@ -53,10 +53,13 @@ app.use("/api/blog",blogRouter);
 app.use("/api/user",userRouter);
 app.use("/api/comment",commentRouter);
 
+app.get("/js/showblog.js",(req,res,next)=>{
+  console.log(__dirname+"public/assets/showblog.js")
+  res.status(200).sendFile(__dirname +"public/showblog.js")
+})
 app.get("/image/:name",(req,res,next)=>{
     res.sendFile(`${__dirname}/public/cover_images/${req.params.name}`);
 })
-
 
 app.use((err,req,res,next)=>{
     const message=err.message || "internal server error";
