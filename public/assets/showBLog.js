@@ -34,6 +34,7 @@ async function showBlog(id){
 
     <input type="checkbox" name="" id="checkbox"/>
                <div class="commentSection">
+               <h1>Comment Section</h1>
                    <div class="commentSection1">
                        <label for="checkbox" class="commentOnOff" Checked>X</label>
                        
@@ -93,7 +94,7 @@ async function showComments(blogId){
     if(!result.success){return alert(result.error)}
     const comments=result.message.reverse();
     const comment_list=document.getElementsByClassName("comment_list")[0];
-    comment_list.innerHTML="<h1>Comment Section</h1>"
+    comment_list.innerHTML=" "
     comments.forEach((comment)=>{
         comment_list.innerHTML+=`
         <div class="comment">
