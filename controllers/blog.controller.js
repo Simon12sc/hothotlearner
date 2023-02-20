@@ -93,13 +93,13 @@ const updateBlog=expressAsyncHandler( async (req,res,next)=>{
 
     const blog=await Blog.findByPk(id);
     if(!blog){return next(createError(400,"blog not found !!"))}
-
+    
+    console.log(req.body)
     blog.title= req.body.title || blog.title;
     blog.description=req.body.description || blog.description;
     blog.tags=req.body.tags || blog.tags
     blog.shortdescription=req.body.shortdescription || blog.shortdescription
     await blog.save();
-
     res.json({success:true,message:blog});
 })
 
@@ -128,7 +128,8 @@ const updateCoverImage=expressAsyncHandler(async(req,res,next)=>{
  if(!id){return next(createError(400,"id is required..."))}
  let blog=await Blog.findByPk(id);
  if(!blog){return next(createError(400,"blog not found !!"))}
- 
+ console.log(req.file)
+ console.log(req.body)
  const cover_image=req.file.filename;   
  if(!cover_image){return next(createError(400,"cover image is required !!"))}
 

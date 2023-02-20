@@ -261,56 +261,8 @@ nav .profile-details i{
   /* padding: 0 20px; */
 }
 
-/* left box */
-.home-content .sales-boxes .recent-sales{
-  width: 65%;
-  background: #fff;
-  padding: 20px 30px;
-  margin: 0 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-.home-content .sales-boxes .sales-details{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
 
 
-/* Right box */
-.home-content .sales-boxes .top-sales{
-  width: 35%;
-  background: #fff;
-  padding: 20px 30px;
-  margin: 0 20px 0 0;
-  border-radius: 12px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-}
-.sales-boxes .top-sales li{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-}
-.sales-boxes .top-sales li a img{
-  height: 40px;
-  width: 40px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-right: 10px;
-  background: #333;
-}
-.sales-boxes .top-sales li a{
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-}
-.sales-boxes .top-sales li .product,
-.price{
-  font-size: 17px;
-  font-weight: 400;
-  color: #333;
-}
 /* Responsive Media Query */
 @media (max-width: 1240px) {
   .sidebar{
@@ -349,6 +301,103 @@ nav .profile-details i{
   .home-content .sales-boxes .top-sales{
     margin: 0;
   }
+}
+
+
+.blogbox{
+  width:100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+#searchBlogInput{
+  margin:0px 12px;
+  width: 50%;
+}
+#searchBlogPageInput{
+  width: 40px;
+}
+#searchBlogButton{
+  margin-right: 12px;
+  background: rgb(52, 138, 252);
+  color: white;
+  text-align: center;
+  padding: 5px;
+    border-radius: 10px;
+}
+#searchBlogButton:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
+#blogDateList{
+  overflow-y: scroll;
+  position: relative;
+  height:500px;
+  min-width: 360px;
+  width:100%x;
+  max-height: 500px;
+  overflow: scroll;
+}
+.blogListElement{
+  width:100%;
+  height:100px;
+  margin:10px;
+  display:flex;
+  padding: 5px;
+}
+.bleLeft{
+  height:100px;
+  width: 100px;
+  background-position: center;
+  background-size: cover;
+  border-radius:5px;
+}
+.bleRight{
+  display:flex;
+  width: 50%;
+  height: 100%;
+  flex-direction:column;
+  padding:5px;
+}
+.bleRight>p{
+  margin:2px;
+  font-size:12px;
+}
+.bleRight>h1{
+  margin:0;
+  font-size:12px;
+
+}
+
+.bleButtonSection{
+height: 100%;
+  margin:5px;
+  display:flex;
+  justify-content:space-between;
+} 
+
+.bleButtonSection button{
+  width:30%;
+  height: 100%;
+  border-radius:5px;
+  border:none;
+  color:white;
+}
+.bleButtonSection button:hover{
+  background:black;
+  cursor:pointer;
+}
+.deleteButton{
+  background:red;
+}
+
+.editButton{
+  background:green;
+}
+
+.imageUpdateButton{
+  background:blue;
 }
 @media (max-width: 1000px) {
   .overview-boxes .box{
@@ -449,18 +498,206 @@ nav .profile-details i{
         background: green;
         cursor: pointer;
       }
-      #blogDateList li{
-        list-style-type: none;
-        display: flex;
-        position: relative;
-        flex-wrap: wrap;
-        width: 100%;
+      
+/* image preview */
 
-         }
-         #blogDateList li div{
-          margin-left:10px;
-          margin-right:10px;
-         }
+:root {
+	--blue: #0071FF;
+	--light-blue: #B6DBF6;
+	--dark-blue: #005DD1;
+	--grey: #f2f2f2;
+}
 
+
+.container {
+	max-width: 400px;
+	width: 100%;
+	background: #fff;
+	padding: 30px;
+	border-radius: 30px;
+}
+.img-area {
+	position: relative;
+	width: 100%;
+	height: 240px;
+	background: var(--grey);
+	margin-bottom: 30px;
+	border-radius: 15px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.img-area .icon {
+	font-size: 100px;
+}
+.img-area h3 {
+	font-size: 20px;
+	font-weight: 500;
+	margin-bottom: 6px;
+}
+.img-area p {
+	color: #999;
+}
+.img-area p span {
+	font-weight: 600;
+}
+.img-area img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	z-index: 100;
+}
+.img-area::before {
+	content: attr(data-img);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .5);
+	color: #fff;
+	font-weight: 500;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	opacity: 0;
+	transition: all .3s ease;
+	z-index: 200;
+}
+.img-area.active:hover::before {
+	opacity: 1;
+}
+.select-image {
+	display: block;
+	width: 100%;
+	padding: 16px 0;
+	border-radius: 15px;
+	background: var(--blue);
+	color: #fff;
+	font-weight: 500;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	transition: all .3s ease;
+}
+.select-image:hover {
+	background: var(--dark-blue);
+}
          
+
+.updateImageContainer{
+  z-index: 3;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%);
+}
+.container1 {
+	max-width: 400px;
+	width: 100%;
+	background: #fff;
+	padding: 30px;
+	border-radius: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 101;
+
+}
+.img-area1 {
+	position: relative;
+	width: 100%;
+	height: 240px;
+	background: var(--grey);
+	margin-bottom: 30px;
+	border-radius: 15px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.img-area1 .icon {
+	font-size: 100px;
+}
+.img-area1 h3 {
+	font-size: 20px;
+	font-weight: 500;
+	margin-bottom: 6px;
+}
+.img-area1 p {
+	color: #999;
+}
+.img-area1 p span {
+	font-weight: 600;
+}
+.img-area1 img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	z-index: 100;
+}
+.img-area1::before {
+	content: attr(data-img);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .5);
+	color: #fff;
+	font-weight: 500;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	opacity: 0;
+	transition: all .3s ease;
+	z-index: 200;
+}
+.img-area1.active:hover::before {
+	opacity: 1;
+}
+.select-image1 {
+	display: block;
+	width: 100%;
+	padding: 16px 0;
+	border-radius: 15px;
+	background: var(--blue);
+	color: #fff;
+	font-weight: 500;
+	font-size: 16px;
+	border: none;
+	cursor: pointer;
+	transition: all .3s ease;
+}
+.select-image1:hover {
+	background: var(--dark-blue);
+}
+
+.dim{
+  display: none;
+  background: rgba(0,0,0,0.8);
+  position: fixed;
+  z-index: 100;
+  top:0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+}
 </style>

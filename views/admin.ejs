@@ -92,87 +92,42 @@
 <%-include('./partials/createBlog')%>
 
 
-      <div class="sales-boxes">
-        <div class="recent-sales box">
+      <div class=blogbox">
           <div class="title">Blog list</div>
           <div class="search-box">
             <input type="text" placeholder="Search..." id="searchBlogInput">
+            
+            <i class='bx bx-search' id="searchBlogButton"></i>
             <input type="number" placeholder="page" value=1 id="searchBlogPageInput">
             <select id="blogSearchOrder">
               <option value="1">latest</option>
               <option value="0">oldest</option>
             </select>
-            <i class='bx bx-search' id="searchBlogButton"></i>
           </div>
-          <div class="sales-details">
-            <ul class="details" id="blogDateList">
+            <div id="blogDateList">
               
-            </ul>
-          </div>
-          
+            </div>
+      </div>
+
+<!-- image preview -->
+<div class="dim">
+
+  <div class="container1 updateImageContainer">
+    <p id="updateImageTitle">Not selected !!</p>
+    <input type="file" id="file1" accept="image/*" hidden>
+        <div class="img-area1" data-img="">
+          <i class='bx bxs-cloud-upload icon'></i>
+          <h3>Upload Image</h3>
+          <p>Image size must be less than <span>2MB</span></p>
         </div>
-        <div class="top-sales box">
-          <div class="title">Top Seling Product</div>
-          <ul class="top-sales-details">
-            <li>
-            <a href="#">
-              <img src="images/sunglasses.jpg" alt="">
-              <span class="product">Vuitton Sunglasses</span>
-            </a>
-            <span class="price">$1107</span>
-          </li>
-          <li>
-            <a href="#">
-              <img src="images/jeans.jpg" alt="">
-              <span class="product">Hourglass Jeans </span>
-            </a>
-            <span class="price">$1567</span>
-          </li>
-          <li>
-            <a href="#">
-              <img src="images/nike.jpg" alt="">
-              <span class="product">Nike Sport Shoe</span>
-            </a>
-            <span class="price">$1234</span>
-          </li>
-          <li>
-            <a href="#">
-              <img src="images/scarves.jpg" alt="">
-              <span class="product">Hermes Silk Scarves.</span>
-            </a>
-            <span class="price">$2312</span>
-          </li>
-          <li>
-            <a href="#">
-              <img src="images/blueBag.jpg" alt="">
-              <span class="product">Succi Ladies Bag</span>
-            </a>
-            <span class="price">$1456</span>
-          </li>
-          <li>
-            <a href="#">
-              <img src="images/bag.jpg" alt="">
-              <span class="product">Gucci Womens's Bags</span>
-            </a>
-            <span class="price">$2345</span>
-          <li>
-            <a href="#">
-              <img src="images/addidas.jpg" alt="">
-              <span class="product">Addidas Running Shoe</span>
-            </a>
-            <span class="price">$2345</span>
-          </li>
-<li>
-            <a href="#">
-              <img src="images/shirt.jpg" alt="">
-              <span class="product">Bilack Wear's Shirt</span>
-            </a>
-            <span class="price">$1245</span>
-          </li>
-          </ul>
-        </div>
+        <button class="select-image1">Select Image</button>
+        <br>
+        <button class="select-image1 updateImage1" >Update</button>
+        <br>
+        <button class="select-image1 cancelUpdateImage" >Cancel</button>
       </div>
     </div>
+
   </section>
 <!--
             The "super-build" of CKEditor 5 served via CDN contains a large set of plugins and multiple editor types.

@@ -16,5 +16,4 @@ const db=new Sequelize(process.env.DATABASE,process.env.DB_USER,process.env.DB_P
       }
 })
 
-// const db=new Sequelize("postgres://hot_hot_learner_user:e97Bp7ZfZtFKhD5so22IJMeL3jrpoNMm@dpg-cf82qi2rrk0e2as1e7h0-a.oregon-postgres.render.com/hot_hot_learner")
 export default db;

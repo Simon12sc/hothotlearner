@@ -1,3 +1,4 @@
+let updatingBlogId=undefined;
 let sidebar = document.querySelector(".sidebar");
 let sidebarBtn = document.querySelector(".sidebarBtn");
 sidebarBtn.onclick = function() {
@@ -156,11 +157,13 @@ document.getElementById("createBlogButton").onclick=()=>{createBlog()}
 
 
           async function createBlog(){
-            const description = editor.getData();
-            const cover_image=document.querySelector('input[type="file"]').files[0]
-            const tags=document.querySelector("#blogTags").value
-            const title=document.querySelector("#blogTitle").value
-            const shortDescription=document.querySelector("#blogShortDescription").value
+              const createBlog=confirm("are you sure want to delete a blog??")
+              if(!createBlog){return}
+              const description = editor.getData();
+              const cover_image=document.querySelector('input[type="file"]').files[0]
+              const tags=document.querySelector("#blogTags").value
+              const title=document.querySelector("#blogTitle").value
+              const shortDescription=document.querySelector("#blogShortDescription").value
             if(!cover_image){return alert("Empty cover image is not allowed !!")}
             if(!description){return alert("Empty description is not allowed !!")}
             if(!title){return alert("Empty title is not allowed !!")}
@@ -173,6 +176,7 @@ document.getElementById("createBlogButton").onclick=()=>{createBlog()}
             data.append("tags",tags);
             data.append("title",title);
             data.append("shortDescription",shortDescription);
+            document.getElementById("createBlogButton").style.display="none"
             const res=await fetch("/api/blog/create",{method:"POST",body:data});
             const result=await res.json()
             if(!result.success){return alert(result.error)}
@@ -201,9 +205,167 @@ async function searchBlog(nextPage){
         function showBlog(blog){
             dateUl.innerHTML=" "
             blog.forEach(data => {
-                dateUl.innerHTML+=`<li>${data.createdAt.split("T")[0]}  ${data.title}<button class="button">DELETE</button><button class="button">UPDATE</button></li>`
-         
-            });
+                dateUl.innerHTML+=` 
+            <div class="blogListElement">
+                <div class="bleLeft" style="background-image:url('/image/${data.cover_image}')">
+
+                </div>
+                <div class="bleRight">
+                  <p>${data.createdAt.split("T")[0]}</p>
+                  <h1>${data.title}</h1>
+                  <div class="bleButtonSection">
+                    <button class="deleteButton" blogId="${data.id}" blogTitle="${data.title}">Delete</button>
+                    <button class="editButton" blogId="${data.id}">edit</button>
+                    <button class="imageUpdateButton" blogId="${data.id}" blogTitle="${data.title}">update image</button>
+                    
+                  </div>
+                </div>
+            </div>`
             
+            });
+         Array.from(document.querySelectorAll(".deleteButton")).forEach((button)=>{
+          const blogId=button.getAttribute("blogId")
+          const blogTitle=button.getAttribute("blogTitle")
+          button.onclick=()=>{deleteBlog(blogId,blogTitle)}
+        })
+        Array.from(document.querySelectorAll(".imageUpdateButton")).forEach((button)=>{
+            const blogId=button.getAttribute("blogId")
+            const blogTitle=button.getAttribute("blogTitle")
+            button.onclick=()=>{updateBlogImage(blogId,blogTitle)}
+        })
+        Array.from(document.querySelectorAll(".imageUpdateButton")).forEach((button)=>{
+            const blogId=button.getAttribute("blogId")
+            const blogTitle=button.getAttribute("blogTitle")
+            button.onclick=()=>{editBlog(blogId,blogTitle)}
+        })
 
         }
+
+        async function editBlog(id){
+            const pendingBlog=await fetch("/api/blog/"+id);
+            const blog=await pendingBlog.json();
+
+            if(!blog.success){
+                return;
+            }
+            
+
+
+
+        }
+
+
+ function updateBlogImage(blogId,blogTitle){
+
+     document.querySelector(".dim").style.display="block";
+     document.querySelector(".img-area1").dataset.img="Image not selected !!"
+     document.querySelector(".img-area1").innerHTML=`
+     <i class='bx bxs-cloud-upload icon'></i>
+          <h3>Upload Image</h3>
+          <p>Image size must be less than <span>2MB</span></p>
+     `;
+     document.querySelector("#updateImageTitle").innerText="Title: "+ blogTitle;
+     document.querySelector("#file1").value=null;
+     document.querySelector("#file1").src=null;
+     
+     document.querySelector(".updateImage1").onclick=()=>{
+         updateImage(blogId,blogTitle)
+    }
+    
+}
+
+
+
+async function updateImage(blogId,blogTitle){
+    
+    const updateImage=confirm("are you sure want to update image ?"+ "\n Title:"+blogTitle)
+        const cover_image=document.querySelector('#file1').files[0]
+        if(!updateImage || !cover_image){return}
+
+        const formData=new FormData();
+        formData.append("cover_image",cover_image);
+                const data= await fetch(`/api/blog/coverImage/${blogId}`,{method:'POST',body:formData})
+                const result=await data.json();
+                if(!result.success){
+                    return alert(result.error)
+                }
+                searchBlog(1)
+                document.querySelector(".dim").style.display="none";
+                  }
+
+
+
+       async function deleteBlog(blogId){
+        const deleteBlog=confirm("are you sure want to delete a blog??")
+if(!deleteBlog){return}
+                const data= await fetch(`/api/blog/${blogId}`,{method:'delete'})
+                const pendingResult=await data.json();
+                const result=await pendingResult;
+                if(!result.success){
+                    return alert(result.error)
+                }
+                searchBlog(1)
+                return alert(result.message)
+       }
+
+
+
+    //    image preview
+    const selectImage = document.querySelector('.select-image');
+    const selectImage1 = document.querySelector('.select-image1');
+const inputFile = document.querySelector('#file');
+const inputFile1 = document.querySelector('#file1');
+const imgArea = document.querySelector('.img-area');
+const imgArea1 = document.querySelector('.img-area1');
+
+selectImage.addEventListener('click', function () {
+	inputFile.click();
+})
+selectImage1.addEventListener('click', function () {
+	inputFile1.click();
+})
+
+inputFile.addEventListener('change', function () {
+	const image = this.files[0]
+	if(image.size < 2000000) {
+		const reader = new FileReader();
+		reader.onload = ()=> {
+			const allImg = imgArea.querySelectorAll('img');
+			allImg.forEach(item=> item.remove());
+			const imgUrl = reader.result;
+			const img = document.createElement('img');
+			img.src = imgUrl;
+			imgArea.appendChild(img);
+			imgArea.classList.add('active');
+			imgArea.classList.add('previewImageJs');
+			imgArea.dataset.img = image.name;
+		}
+		reader.readAsDataURL(image);
+	} else {
+		alert("Image size more than 2MB");
+	}
+})
+inputFile1.addEventListener('change', function () {
+	const image1 = this.files[0]
+	if(image1.size < 2000000) {
+		const reader1 = new FileReader();
+		reader1.onload = ()=> {
+			const allImg1 = imgArea1.querySelectorAll('img1');
+			allImg1.forEach(item=> item.remove());
+			const imgUrl1 = reader1.result;
+			const img1 = document.createElement('img');
+			img1.src = imgUrl1;
+			imgArea1.appendChild(img1);
+			imgArea1.classList.add('active');
+			imgArea1.dataset.img = image1.name;
+		}
+		reader1.readAsDataURL(image1);
+	} else {
+		alert("Image size more than 2MB");
+	}
+})
+
+document.querySelector(".cancelUpdateImage").onclick=()=>{
+    document.querySelector(".dim").style.display="none";
+}
+
