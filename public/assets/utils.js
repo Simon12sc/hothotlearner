@@ -46,4 +46,11 @@ function agoDate({ year, date, month, hour, minute, second }) {
   let uploadedTime = dateSpliter(fullDate);
   return agoDate(uploadedTime)
   }
+
+
+  export function scrolltoId(element){
+    window.scrollTo({
+    top: element.scrollTop,
+    left: element.scrollLeft});
+    }
   

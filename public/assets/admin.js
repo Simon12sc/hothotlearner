@@ -1,4 +1,5 @@
-let updatingBlogId=undefined;
+
+let updatingBlogId="";
 let sidebar = document.querySelector(".sidebar");
 let sidebarBtn = document.querySelector(".sidebarBtn");
 sidebarBtn.onclick = function() {
@@ -157,18 +158,18 @@ document.getElementById("createBlogButton").onclick=()=>{createBlog()}
 
 
           async function createBlog(){
-              const createBlog=confirm("are you sure want to delete a blog??")
-              if(!createBlog){return}
+              const createBlog=confirm("are you sure want to create a blog??");
+              if(!createBlog){return;}
               const description = editor.getData();
-              const cover_image=document.querySelector('input[type="file"]').files[0]
-              const tags=document.querySelector("#blogTags").value
-              const title=document.querySelector("#blogTitle").value
-              const shortDescription=document.querySelector("#blogShortDescription").value
-            if(!cover_image){return alert("Empty cover image is not allowed !!")}
-            if(!description){return alert("Empty description is not allowed !!")}
-            if(!title){return alert("Empty title is not allowed !!")}
-            if(!tags){return alert("Empty tags is not allowed !!")}
-            if(!shortDescription){return alert("Empty shortDescription is not allowed !!")}
+              const cover_image=document.querySelector('input[type="file"]').files[0];
+              const tags=document.querySelector("#blogTags").value;
+              const title=document.querySelector("#blogTitle").value;
+              const shortDescription=document.querySelector("#blogShortDescription").value;
+            if(!cover_image){return alert("Empty cover image is not allowed !!");}
+            if(!description){return alert("Empty description is not allowed !!");}
+            if(!title){return alert("Empty title is not allowed !!");}
+            if(!tags){return alert("Empty tags is not allowed !!");}
+            if(!shortDescription){return alert("Empty shortDescription is not allowed !!");}
             
             const data=new FormData();
             data.append("cover_image",cover_image);
@@ -176,11 +177,11 @@ document.getElementById("createBlogButton").onclick=()=>{createBlog()}
             data.append("tags",tags);
             data.append("title",title);
             data.append("shortDescription",shortDescription);
-            document.getElementById("createBlogButton").style.display="none"
+            // document.getElementById("createBlogButton").style.display="none";
             const res=await fetch("/api/blog/create",{method:"POST",body:data});
-            const result=await res.json()
-            if(!result.success){return alert(result.error)}
-            alert("Blog created success fully!!")
+            const result=await res.json();
+            if(!result.success){return alert(result.error);}
+            alert("Blog created success fully!!");
             window.location.href="/admin/dashboard";
 
           }
@@ -233,7 +234,7 @@ async function searchBlog(nextPage){
             const blogTitle=button.getAttribute("blogTitle")
             button.onclick=()=>{updateBlogImage(blogId,blogTitle)}
         })
-        Array.from(document.querySelectorAll(".imageUpdateButton")).forEach((button)=>{
+        Array.from(document.querySelectorAll(".editButton")).forEach((button)=>{
             const blogId=button.getAttribute("blogId")
             const blogTitle=button.getAttribute("blogTitle")
             button.onclick=()=>{editBlog(blogId,blogTitle)}
@@ -248,14 +249,48 @@ async function searchBlog(nextPage){
             if(!blog.success){
                 return;
             }
-            
-
-
-
+            document.getElementById("createArea").scrollIntoView()
+            blogTitle.value=blog.message.title;
+            blogShortDescription.value=blog.message.shortDescription;
+            blogTags.value=blog.message.tags;
+            editor.setData(blog.message.description);
+            updatingBlogId=blog.message.id;
         }
+        
+document.querySelector("#updateBlogButton").onclick=()=>{updateBlog()}
+        
+async function updateBlog(){
+    if(!updatingBlogId){return alert("select the blog first")}
+    const createBlog=confirm("are you sure want to update a blog??")
+    if(!createBlog){return}
+              const description = editor.getData();
+              const tags=document.querySelector("#blogTags").value
+              const title=document.querySelector("#blogTitle").value
+              const shortDescription=document.querySelector("#blogShortDescription").value;
+            if(!description){return alert("Empty description is not allowed !!")}
+            if(!title){return alert("Empty title is not allowed !!")}
+            if(!tags){return alert("Empty tags is not allowed !!")}
+            if(!shortDescription){return alert("Empty shortDescription is not allowed !!")}
+            const data=JSON.stringify({
+                description,tags,title,shortDescription
+            })
+            document.getElementById("updateBlogButton").style.display="none"
+            try{
+
+                const res=await fetch(`/api/blog/${updatingBlogId}`,{method:"POST",body:data,headers:{"Content-Type":"application/json"}});
+                const result=await res.json()
+                if(!result.success){return alert(result.error)}
+                updatingBlogId=undefined;
+                alert("Blog updated success fully!!")
+                window.location.href="/admin/dashboard"
+            }catch(err){
+                console.log(err)
+            }
+        }
+        
 
 
- function updateBlogImage(blogId,blogTitle){
+        function updateBlogImage(blogId,blogTitle){
 
      document.querySelector(".dim").style.display="block";
      document.querySelector(".img-area1").dataset.img="Image not selected !!"

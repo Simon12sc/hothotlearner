@@ -3,14 +3,15 @@
 <h1>Create Blog - Hot learner</h1>
 <label for="">Cover Image</label>
 <div class="container">
-    <input type="file" id="file" accept="image/*" accept="/imageimage/png, image/jpeg, image/jpg" placeholder="choose the cover image.." id="cover_image"hidden>
-    <div class="img-area" data-img="">
-      <i class='bx bxs-cloud-upload icon'></i>
-      <h3>Upload Image</h3>
-      <p>Image size must be less than <span>2MB</span></p>
-    </div>
-    <button class="select-image">Select Image</button>
+  <input type="file" id="file" accept="image/*" accept="/imageimage/png, image/jpeg, image/jpg" placeholder="choose the cover image.." id="cover_image"hidden>
+  <span id="createArea"></span>
+  <div class="img-area" data-img="">
+    <i class='bx bxs-cloud-upload icon'></i>
+    <h3>Upload Image</h3>
+    <p>Image size must be less than <span>2MB</span></p>
   </div>
+  <button class="select-image">Select Image</button>
+</div>
 <label for="">Title</label>
 <input type="text" placeholder="Title" id="blogTitle">
 <label for="">Short description</label>
@@ -23,4 +24,6 @@
 <label for="">Tags</label>
 <input type="text" placeholder="tags" id="blogTags">
     <button id="createBlogButton">Create</button>
+    <button id="updateBlogButton">Update</button>
+    <button id="clearBlogButton">Clear</button>
 </div>

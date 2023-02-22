@@ -16,10 +16,10 @@ const storage = multer.diskStorage({
   
   const upload = multer({ storage: storage })
 
-  blogRouter.post("/coverImage/:id",upload.single("cover_image"),updateCoverImage);
-  blogRouter.patch("/:id",updateBlog);
+  blogRouter.post("/create", isAuthenticatedUser,upload.single("cover_image"),createBlog);
+blogRouter.post("/coverImage/:id",upload.single("cover_image"),updateCoverImage);
+blogRouter.post("/:id",updateBlog);
 blogRouter.get("/:page/:limit/search",searchBlog);
-blogRouter.post("/create", isAuthenticatedUser,upload.single("cover_image"),createBlog);
 blogRouter.get("/:page/:limit",getAllBlogs);
 blogRouter.get("/:id",getBlog);
 blogRouter.delete("/:id",deleteBlog);

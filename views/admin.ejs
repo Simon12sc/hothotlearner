@@ -23,7 +23,7 @@
           </a>
         </li>
         <li>
-          <a href="#">
+          <a href="#createArea">
             <i class='bx bx-box' ></i>
             <span class="links_name">Create</span>
           </a>
@@ -89,9 +89,8 @@
         
       </div>
 
-<%-include('./partials/createBlog')%>
-
-
+      
+      
       <div class=blogbox">
           <div class="title">Blog list</div>
           <div class="search-box">
@@ -107,8 +106,9 @@
             <div id="blogDateList">
               
             </div>
-      </div>
-
+          </div>
+          
+          <%-include('./partials/createBlog')%>
 <!-- image preview -->
 <div class="dim">
 
@@ -138,7 +138,7 @@
             Uncomment to load the Spanish translation
             <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/super-build/translations/es.js"></script>
         -->
-  <script type="text/javascript" src="/admin.js">
+  <script type="module" src="/admin.js">
 
  </script>
 

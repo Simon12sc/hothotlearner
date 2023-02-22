@@ -8,9 +8,8 @@ import User from "../models/user.model.js";
 
 //Admin can create blog
 const createBlog=expressAsyncHandler( async (req,res,next)=>{
+
    const {title,shortDescription,description,tags}=req.body;
-   console.log(req.body)
-   console.log(req.file)
    const cover_image=req.file.filename;
 
    if(!title){
@@ -91,14 +90,14 @@ const updateBlog=expressAsyncHandler( async (req,res,next)=>{
     const {id}=req.params;
     if(!id){return next(createError(400,"id is required..."))}
 
-    const blog=await Blog.findByPk(id);
+    const blog=await Blog.findByPk(Number(id));
     if(!blog){return next(createError(400,"blog not found !!"))}
     
     console.log(req.body)
     blog.title= req.body.title || blog.title;
     blog.description=req.body.description || blog.description;
     blog.tags=req.body.tags || blog.tags
-    blog.shortdescription=req.body.shortdescription || blog.shortdescription
+    blog.shortDescription=req.body.shortDescription || blog.shortDescription
     await blog.save();
     res.json({success:true,message:blog});
 })
