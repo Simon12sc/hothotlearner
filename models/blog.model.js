@@ -15,7 +15,7 @@ const Blog =  db.define("blog",{
         type:DataTypes.STRING
     },
     description:{
-        type:DataTypes.STRING(50000),
+        type:DataTypes.STRING(500000),
         allowNull:false
     },
     tags:{
