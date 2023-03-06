@@ -1,4 +1,5 @@
 import { getAgo } from "./utils.js";
+import { getAgo, hideLoading, showLoading } from "./utils.js";
 
 let tog=false;
 const blogShower=document.getElementsByClassName("blogShower")[0]
@@ -9,8 +10,6 @@ let userId = null;
 
 const logout_button=document.getElementsByClassName("logout_button")[0]
 
-let page=1;
-let limit=15;
 logout_button.onclick=()=>{logout()}
 
 
@@ -25,16 +24,17 @@ function categorySearch(data){
 showBlog(document.getElementById("id").innerText);
 
 async function showBlog(id){
-    console.log(id)
+    showLoading()
     let res=await fetch(`/api/blog/${id}`);
     let data=await res.json();
+    hideLoading()
+    toggleBlogShower.click();
       
     blogShower.innerHTML=`
     <section>
 
     <input type="checkbox" name="" id="checkbox"/>
                <div class="commentSection">
-               <h1>Comment Section</h1>
                    <div class="commentSection1">
                        <label for="checkbox" class="commentOnOff" Checked>X</label>
                        
@@ -42,11 +42,13 @@ async function showBlog(id){
                        <div class="comment_list">
                            
                            </div>
+                           <form id="commentForm">
                            <div class="comment_area">
-                           <button id="refreshComment">Refresh</button><br>
+                           <button type="button" id="refreshComment">Refresh</button><br>
                            <input type="text" placeholder="type here..." class="comment_input"/>
-                           <button class="commentBTN">comment</button>
-                       </div>
+                           <button class="commentBTN" type="submit">comment</button>
+                           </div>
+                           </form>
                            </div>
                            
                            </section>
@@ -65,10 +67,15 @@ async function showBlog(id){
             ${data.message.description}
         </div>
     </div>`
-    document.getElementsByClassName("commentBTN")[0].onclick=()=>{addComment(id)}
+
+    document.getElementById("commentForm").onsubmit=(e)=>{
+        e.preventDefault();
+        addComment(id)
+    }
     document.getElementById("refreshComment").onclick=()=>{showComments(id)}
     showComments(id);
 }
+
 
 
 
@@ -76,13 +83,13 @@ async function addComment(id){
   
     const comment_input=document.getElementsByClassName("comment_input")[0];
     let data={message:comment_input.value.toString(),blogId:id}
-
+    showLoading();
+    comment_input.value=""
     const res=await fetch("/api/comment/create",{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"application/json"}});
     const result=await res.json()
-
+hideLoading();
     if(!result.success){return alert(result.error)}
     showComments(id);
-    comment_input.value=""
 }
 
 
@@ -123,9 +130,11 @@ async function showComments(blogId){
                 let data={
                     blogId,commentId
                 }
+                showLoading();
                 const res=await fetch("/api/comment/delete",{method:'delete',body:JSON.stringify(data),headers:{
                     "Content-Type":"application/json"
                 }})
+                hideLoading();
                 const result=await res.json();
 
                 if(!result.success){return alert(result.error)}
@@ -147,7 +156,9 @@ async function logout(){
             
     let confirm=window.confirm("are you sure want to logout ?")
     if(!confirm){return}
+    showLoading();
     let res=await fetch(`/api/user/logout`);
+    hideLoading();
     let result = await res.json();
     
     if(result.success){
@@ -157,6 +168,7 @@ async function logout(){
     }
 }
 async function isLoggedIn(){
+
     let res=await fetch(`/api/user/me`);
     let result = await res.json();
     

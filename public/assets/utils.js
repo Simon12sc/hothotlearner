@@ -56,7 +56,6 @@ function agoDate({ year, date, month, hour, minute, second }) {
 
     
     export function showLoading(){
-      document.querySelector("#loading").style.display="block"
       document.querySelector("#loading").style.display="flex"
 
     }

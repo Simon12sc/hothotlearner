@@ -101,8 +101,8 @@
         align-items: center;
     }
     .userProfile{
-        height: 30px;
-        width: 30px;
+        height: 20px;
+        width: 20px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -238,6 +238,7 @@
 
     .search_container{
         display: flex;
+        align-items: center;
         justify-content: center;
         margin: 20px;
     }

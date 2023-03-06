@@ -81,7 +81,7 @@ function categorySearch(data){
                                    <div class="comment_area">
                                    <button type="button" id="refreshComment">Refresh</button><br>
                                    <input type="text" placeholder="type here..." class="comment_input"/>
-                                   <button class="commentBTN">comment</button>
+                                   <button class="commentBTN" type="submit">comment</button>
                                    </div>
                                    </form>
                                    </div>
