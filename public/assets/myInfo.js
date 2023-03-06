@@ -1,5 +1,5 @@
 import { getAgo } from "./utils.js"
-
+import { hideLoading,showLoading } from "./utils.js"
 const login_button=document.getElementsByClassName("login_button")[0]
 const user=document.getElementsByClassName("user")[0]
 const logout_button=document.getElementsByClassName("logout_button")[0]
@@ -50,6 +50,7 @@ function showMyInfo(myData){
 async function forgotPassword(email){
   let data={email}
   document.querySelector("#forgotPasswordButton").style.display="none"
+  showLoading()
   let res=await fetch("api/user/verify",{
     method:'post',
       body:JSON.stringify(data),
@@ -57,20 +58,22 @@ async function forgotPassword(email){
           'Content-Type':"application/json"
       }
   })
-  
+  hideLoading();
   let result=await res.json();
   if(!result.success){return showError(result.error)}
   const code=window.prompt(`${result.message} \n enter the code please`);
   
   let data1={email,activateCode:code}
+  showLoading();
   let res1=await fetch("api/user/forgot",{
       method:'post',
       body:JSON.stringify(data1),
       headers:{
           'Content-Type':"application/json"
         }
-      })
-      
+    })
+    hideLoading();
+    
       let result1=await res1.json();
       if(!result1.success){
         document.querySelector("#forgotPasswordButton").style.display="block"
@@ -90,6 +93,7 @@ async function forgotPassword(email){
 
 
     let data={password,newPassword}
+    showLoading();
     let res1=await fetch("api/user/update/password",{
         method:'post',
         body:JSON.stringify(data),
@@ -97,7 +101,7 @@ async function forgotPassword(email){
             'Content-Type':"application/json"
         }
     })
-    
+    hideLoading();
     let result1=await res1.json();
     if(!result1.success){
         return alert(result1.error)
@@ -115,6 +119,7 @@ async function updateEmail(){
     const password=window.prompt("enter here your password");
 
     let data1={email,password}
+    showLoading();
     let res1=await fetch("api/user/update/email",{
         method:'post',
         body:JSON.stringify(data1),
@@ -122,7 +127,7 @@ async function updateEmail(){
             'Content-Type':"application/json"
         }
     })
-    
+    hideLoading();
     let result1=await res1.json();
     if(!result1.success){
         return alert(result1.error)
@@ -141,7 +146,7 @@ async function update(){
    
 
     let data={name,dob,address,password};
-
+showLoading();
     let res=await fetch("api/user/update/myInfo",{
         method:'post',
         body:JSON.stringify(data),
@@ -149,7 +154,7 @@ async function update(){
             'Content-Type':"application/json"
         }
     })
-
+hideLoading();
     let result=await res.json()
     if(!result.success){return alert(result.error)}
 
@@ -159,7 +164,9 @@ async function update(){
 }
 
 async function isLoggedIn(){
+    showLoading();
     let res=await fetch(`/api/user/me`);
+    hideLoading();
     let result = await res.json();
     
     if(result.success){
@@ -182,7 +189,9 @@ async function logout(){
     
     let confirm=window.confirm("are you sure want to logout ?")
     if(!confirm){return}
+    showLoading();
     let res=await fetch(`/api/user/logout`);
+    hideLoading();
     let result = await res.json();
     
     if(result.success){
@@ -201,7 +210,7 @@ async function verifyEmail(email){
    
 
     let data={email}
-    
+    showLoading();
     let res=await fetch("api/user/verify",{
         method:'post',
         body:JSON.stringify(data),
@@ -209,7 +218,7 @@ async function verifyEmail(email){
             'Content-Type':"application/json"
         }
     })
-    
+    hideLoading();
     let result=await res.json();
     if(!result.success){return alert(result.error)}
     const code=window.prompt(`${result.message} \n enter the code please`);
@@ -217,6 +226,7 @@ async function verifyEmail(email){
       alert("I cancel the process because no code found !!")
     }
     let data1={email,activateCode:code}
+    showLoading();
     let res1=await fetch("api/user/activate",{
         method:'post',
         body:JSON.stringify(data1),
@@ -224,7 +234,7 @@ async function verifyEmail(email){
             'Content-Type':"application/json"
         }
     })
-    
+    hideLoading();
     let result1=await res1.json();
     if(!result1.success){
       activateButton.style.display="block"

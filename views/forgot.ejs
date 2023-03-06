@@ -94,11 +94,12 @@ footer{
 <body>
 
     <%-include('partials/fixNav.ejs');%>
-            <div class="loader"></div>
-        </head>
-        <body>
-        
-            <main>
+    <div class="loader"></div>
+</head>
+<body>
+    
+    <main>
+                <%-include('partials/loading.ejs');%>
         
                 <div class="container">
                     <div class="container_right">
@@ -121,7 +122,7 @@ footer{
         </div>
             </main>
         
-            <script type="text/javascript" src="/forgot.js">
+            <script type="module" src="/forgot.js">
 
             </script>
 </body>

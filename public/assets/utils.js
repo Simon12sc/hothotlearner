@@ -53,4 +53,13 @@ function agoDate({ year, date, month, hour, minute, second }) {
     top: element.scrollTop,
     left: element.scrollLeft});
     }
-  
+
+    
+    export function showLoading(){
+      document.querySelector("#loading").style.display="block"
+      document.querySelector("#loading").style.display="flex"
+
+    }
+    export function hideLoading(){
+      document.querySelector("#loading").style.display="none"
+    }

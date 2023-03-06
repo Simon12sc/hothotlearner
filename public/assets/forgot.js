@@ -1,3 +1,4 @@
+import {hideLoading,showLoading} from "./utils.js";
 
                 const emailTag=document.getElementById("email");
                 const login=document.getElementsByClassName("login")[0];
@@ -17,7 +18,7 @@
                    
         
                     let data={email:emailTag.value}
-                    
+                    showLoading();
                     let res=await fetch("api/user/verify",{
                         method:'post',
                         body:JSON.stringify(data),
@@ -25,7 +26,7 @@
                             'Content-Type':"application/json"
                         }
                     })
-                    
+                    hideLoading();
                     let result=await res.json();
                     if(!result.success){return showError(result.error)}
                     const code=window.prompt(`${result.message} \n enter the code please`);

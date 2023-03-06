@@ -1,4 +1,4 @@
-import { getAgo } from "./utils.js";
+import { getAgo, hideLoading, showLoading } from "./utils.js";
 
 let tog=false;
         const blogShower=document.getElementsByClassName("blogShower")[0]
@@ -20,6 +20,7 @@ let tog=false;
  
 
 function categorySearch(data){
+    
             let keyword=document.getElementsByClassName("search_input")[0];
             keyword.value=data;
             search(1);
@@ -58,8 +59,10 @@ function categorySearch(data){
 
         
         async function showBlog(id){
+            showLoading()
             let res=await fetch(`/api/blog/${id}`);
             let data=await res.json();
+            hideLoading()
             toggleBlogShower.click();
               
             blogShower.innerHTML=`
@@ -113,9 +116,11 @@ function categorySearch(data){
         async function addComment(id){
             const comment_input=document.getElementsByClassName("comment_input")[0];
             let data={message:comment_input.value.toString(),blogId:id}
-            comment_input.value=""
+            comment_input.value="";
+            showLoading()
             const res=await fetch("api/comment/create",{method:"post",body:JSON.stringify(data),headers:{"Content-Type":"application/json"}});
-            const result=await res.json()
+            const result=await res.json();
+            hideLoading()
             if(!result.success){return alert(result.error)}
             showComments(id);
         }
@@ -157,11 +162,12 @@ function categorySearch(data){
                         let data={
                             blogId,commentId
                         }
+                        showLoading();
                         const res=await fetch("/api/comment/delete",{method:'delete',body:JSON.stringify(data),headers:{
                             "Content-Type":"application/json"
                         }})
                         const result=await res.json();
-
+                        hideLoading()
                         if(!result.success){return alert(result.error)}
 
                         showComments(blogId);
@@ -190,7 +196,6 @@ function categorySearch(data){
                 // console.log(element.attributes["blog_id"].value)
                 element.onclick=()=>showBlog(element.attributes["blog_id"].value)
             });
-            
         }
 
 
@@ -223,10 +228,12 @@ function categorySearch(data){
 
         async function search(nextPage){
             contentBox.innerHTML="<h1 style=`color:red;`>loading....</h1>"
+            showLoading();
             const keyword=document.getElementsByClassName("search_input")[0];
             
             let res=await fetch(`/api/blog/${nextPage}/15/search?title=${keyword.value}&order=${order.value}`);
             let data=await res.json();
+            hideLoading();
             if(!data.success){
                 
                 return showError(data.error)
@@ -234,7 +241,7 @@ function categorySearch(data){
 
             addPagination(data.total,nextPage);
             addToBlog(data.message)
-            
+    
         }
         
         async function isLoggedIn(){
@@ -258,11 +265,14 @@ function categorySearch(data){
             
             let confirm=window.confirm("are you sure want to logout ?")
             if(!confirm){return}
+            showLoading();
             let res=await fetch(`/api/user/logout`);
             let result = await res.json();
             
             if(result.success){
-            location.reload();    
+            hideLoading();
+                location.reload(); 
+
             }else{
                 alert(result.error)
             }

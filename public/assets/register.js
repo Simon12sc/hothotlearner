@@ -1,3 +1,4 @@
+import { hideLoading, showLoading } from "./utils.js";
 const nameTag=document.getElementById("name");
 const emailTag=document.getElementById("email");
 const password=document.getElementById("password");
@@ -21,7 +22,7 @@ async function register(){
     if(password.value!==Cpassword.value){return showError("your password and confirm password doesn't matched")}
 
     let data={name:nameTag.value,email:emailTag.value,password:password.value}
-    
+    showLoading();
     let res=await fetch("/api/user/auth/register",{
         method:'post',
         body:JSON.stringify(data),
@@ -29,7 +30,7 @@ async function register(){
             'Content-Type':"application/json"
         }
     })
-    
+    hideLoading();
     let result=await res.json();
     registerBTN.style.display="block"
     if(!result.success){return showError(result.error)}
