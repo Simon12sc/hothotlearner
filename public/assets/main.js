@@ -27,7 +27,11 @@ function categorySearch(data){
 
 
         toggleBlogShower.onclick=()=>minimize()
-        searchBTN.onclick=()=>search(1)
+
+        document.querySelector("#searchForm").onsubmit=(e)=>{
+            e.preventDefault();
+            search(1)
+        }
         login_button.onclick=()=>location.href='/login'        
         logout_button.onclick=()=>logout()
         Array.from(categoryList).forEach(e=>{
@@ -70,11 +74,13 @@ function categorySearch(data){
                                <div class="comment_list">
                                    
                                    </div>
+                                   <form id="commentForm">
                                    <div class="comment_area">
-                                   <button id="refreshComment">Refresh</button><br>
+                                   <button type="button" id="refreshComment">Refresh</button><br>
                                    <input type="text" placeholder="type here..." class="comment_input"/>
                                    <button class="commentBTN">comment</button>
-                               </div>
+                                   </div>
+                                   </form>
                                    </div>
                                    
                                    </section>
@@ -93,7 +99,11 @@ function categorySearch(data){
                     ${data.message.description}
                 </div>
             </div>`
-            document.getElementsByClassName("commentBTN")[0].onclick=()=>{addComment(id)}
+
+            document.getElementById("commentForm").onsubmit=(e)=>{
+                e.preventDefault();
+                addComment(id)
+            }
             document.getElementById("refreshComment").onclick=()=>{showComments(id)}
             showComments(id);
         }
@@ -103,11 +113,11 @@ function categorySearch(data){
         async function addComment(id){
             const comment_input=document.getElementsByClassName("comment_input")[0];
             let data={message:comment_input.value.toString(),blogId:id}
+            comment_input.value=""
             const res=await fetch("api/comment/create",{method:"post",body:JSON.stringify(data),headers:{"Content-Type":"application/json"}});
             const result=await res.json()
             if(!result.success){return alert(result.error)}
             showComments(id);
-            comment_input.value=""
         }
 
 
@@ -122,7 +132,7 @@ function categorySearch(data){
             comments.forEach((comment)=>{
                 comment_list.innerHTML+=`
                 <div class="comment">
-                <p>${comment.User.name }(${comment.User.role}) - ${getAgo(comment.createdAt)} ${ userId==comment.User.id?`<button commentId="${comment.id}" class="delete-button">delete</button></p>`: ""}
+                <p>${comment.User.name } ${comment.User.role=="admin"?"<i class='fa-solid fa-crown'></i>":"<i class='fa-solid fa-user'></i>"} - ${getAgo(comment.createdAt)} ${ userId==comment.User.id?`<button commentId="${comment.id}" class="delete-button">delete</button></p>`: ""}
                 <h2>${comment.text}</h2>     
                 </div>
                          `})

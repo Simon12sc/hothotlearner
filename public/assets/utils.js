@@ -14,13 +14,13 @@ function agoDate({ year, date, month, hour, minute, second }) {
     let agoHour = Math.abs(hour1 - hour);
     let agoSecond = Math.abs(second1 - second)
     if (agoYear >= 1) {
-      return agoYear + " year ago";
+      return agoYear + " yr ago";
     } else if (agoMonth >= 1) {
-      return agoMonth + " month ago";
+      return agoMonth + " mth ago";
     } else if (agoDate >= 1) {
-      return agoDate + " day ago";
+      return agoDate + " d ago";
     } else if (agoHour >= 1) {
-      return agoHour + " hour ago";
+      return agoHour + " hr ago";
     } else if (agoMinute >= 1) {
       return agoMinute + " min ago";
     } else {

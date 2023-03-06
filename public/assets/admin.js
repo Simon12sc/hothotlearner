@@ -247,6 +247,8 @@ async function searchBlog(nextPage){
             const blog=await pendingBlog.json();
 
             if(!blog.success){
+
+
                 return;
             }
             document.getElementById("createArea").scrollIntoView()
@@ -276,14 +278,17 @@ async function updateBlog(){
             })
             document.getElementById("updateBlogButton").style.display="none"
             try{
-
+                
                 const res=await fetch(`/api/blog/${updatingBlogId}`,{method:"POST",body:data,headers:{"Content-Type":"application/json"}});
                 const result=await res.json()
-                if(!result.success){return alert(result.error)}
+                if(!result.success){
+                    document.getElementById("updateBlogButton").style.display="block"
+                    return alert(result.error)}
                 updatingBlogId=undefined;
                 alert("Blog updated success fully!!")
                 window.location.href="/admin/dashboard"
             }catch(err){
+                document.getElementById("updateBlogButton").style.display="block"
                 console.log(err)
             }
         }

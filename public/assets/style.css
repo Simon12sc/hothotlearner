@@ -354,7 +354,7 @@
         position: fixed;
         z-index: 100;
         right: 15px;
-        bottom: 15px;
+        bottom: 60px;
         width: 100px;
         height: 30px;
         background: #000;
@@ -444,6 +444,7 @@
         left: 0;
         z-index: 101;
         padding: 20px;
+        padding-bottom: 60px;
         overflow-y: scroll;
         transition: 1s;
         background: #000;
