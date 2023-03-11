@@ -9,20 +9,20 @@ import * as url from 'url';
     const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 import rateLimit from "express-rate-limit";
-// import helmet from "helmet";
-// app.use(
-//     helmet({
-//       contentSecurityPolicy: {
-//         directives: {
-//           defaultSrc: ["'self'"],
-//           imgSrc: ["'self'", "data:","*"],
-//           scriptSrc:["'self'","https://cdn.ckeditor.com"]
-//         },
-//       },
-//       crossOriginEmbedderPolicy: false,
-//       crossOriginResourcePolicy: false,
-//     })
-//   );
+import helmet from "helmet";
+app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'", "data:","*"],
+          scriptSrc:["'self'","https://cdn.ckeditor.com"]
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+      crossOriginResourcePolicy: false,
+    })
+  );
 export const limiter = rateLimit({
         windowMs: 15 * 60 * 1000, // 15 minutes
         max: 1000, // limit each IP to 100 requests per windowMs
