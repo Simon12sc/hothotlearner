@@ -8,7 +8,7 @@ const server= app.listen(port,async ()=>{
     console.log(`port ${port} is started...`);
     try{
         link()
-    await db.sync({force:true}); 
+    await db.sync({force:false}); 
     await db.authenticate()
     
     console.log("database connected")

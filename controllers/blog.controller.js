@@ -35,7 +35,7 @@ const getAllBlogs=expressAsyncHandler(  async (req,res,next)=>{
     let blog=await Blog.findAll({
         order: [['createdAt', 'DESC']],
         offset:skip,limit,include:[{model:Comment},{model:View,attributes:["id"]}]});
-    res.json({success:true,message:blog,total:count.count,views:blog[0].dataValues.Views})
+    res.json({success:true,message:blog,total:count.count})
 })
 
 

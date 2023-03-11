@@ -19,8 +19,6 @@ const createUser=expressAsyncHandler(async(req,res,next)=>{
     }
     const isEmail=await User.findOne({where:{email}});
     if(isEmail){return next(createError(400,"email already exist !!"))}
-
-
     const user=await User.create({name,email,password,ipAddress});
     sendToken(user.dataValues,200,res);
 })
@@ -173,6 +171,7 @@ const verifyAccount=expressAsyncHandler(async(req,res,next)=>{
           await sendMail({email,subject:"verify code",message});
           user.activateCode=random;
           user.expireCode=new Date(Date.now()+(1000*60*5))
+          
           await user.save();
           res.status(200).json({success:true,message:`Code sent to ${email}. if message not found then please check your spam mails!!`})
     }catch(err){
@@ -202,8 +201,11 @@ const approveVerifyAccount=expressAsyncHandler(async(req,res,next)=>{
     user.isActivated=true;
     user.activateCode=null;
     user.expireCode=null;
+    if(user.email===process.env.ADMIN){
+        user.role="admin"
+     }
     await user.save()
-    res.status(200).json({success:true,message:"your account has been activated !"})
+    return res.status(200).json({success:true,message:"your account has been activated !"})
 
 })
 
