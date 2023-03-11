@@ -191,7 +191,7 @@ const approveVerifyAccount=expressAsyncHandler(async(req,res,next)=>{
     if(!email){return next(createError(400,"email is required.."))}
     if(!activateCode){return next(createError(400,"activate code is required.."))}
     
-    const user=await User.findOne({where:{activateCode}});
+    const user=await User.findOne({where:{email,activateCode}});
     if(!user){return next(createError(400,"wrong activation code !!"))}
 
     if(new Date(Date.now())>user.expireCode){
