@@ -56,6 +56,9 @@ const User=db.define("User",{
     isActivated:{
         type:DataTypes.BOOLEAN,
         defaultValue:false
+    },
+    ipAddress:{
+        type:DataTypes.STRING,
     }
 })
 

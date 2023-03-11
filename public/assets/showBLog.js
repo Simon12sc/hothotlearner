@@ -1,4 +1,4 @@
-import { getAgo } from "./utils.js";
+
 import { getAgo, hideLoading, showLoading } from "./utils.js";
 
 let tog=false;
@@ -26,8 +26,8 @@ showBlog(document.getElementById("id").innerText);
 async function showBlog(id){
     showLoading()
     let res=await fetch(`/api/blog/${id}`);
+    hideLoading();
     let data=await res.json();
-    hideLoading()
     toggleBlogShower.click();
       
     blogShower.innerHTML=`
@@ -90,10 +90,9 @@ async function addComment(id){
 hideLoading();
     if(!result.success){return alert(result.error)}
     showComments(id);
-}
+} 
 
-
-
+ 
 async function showComments(blogId){
    
     const res=await fetch(`/api/comment/get/${blogId}/1/15`)

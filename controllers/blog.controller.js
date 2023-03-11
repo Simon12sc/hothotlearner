@@ -5,6 +5,7 @@ import expressAsyncHandler from "express-async-handler";
 import fs from "fs";
 import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
+import View from "../models/view.model.js";
 
 //Admin can create blog
 const createBlog=expressAsyncHandler( async (req,res,next)=>{
@@ -33,29 +34,40 @@ const getAllBlogs=expressAsyncHandler(  async (req,res,next)=>{
     const count=await Blog.findAndCountAll();
     let blog=await Blog.findAll({
         order: [['createdAt', 'DESC']],
-        offset:skip,limit,include:Comment});
-    res.json({success:true,message:blog,total:count.count})
+        offset:skip,limit,include:[{model:Comment},{model:View,attributes:["id"]}]});
+    res.json({success:true,message:blog,total:count.count,views:blog[0].dataValues.Views})
 })
 
 
 //user can search blog with id
 const getBlog=expressAsyncHandler( async (req,res,next)=>{
+    var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const id=req.params.id;
     if(!id){return next(createError(400,'blog not found...'))}
     let blog=await Blog.findByPk(id,{where:{isApproved:true},include:[{
         model:User,
         attributes:['id',"name","role"]
-        
     },
     {
         model:Comment,
         include:[{model:User,attributes:['id',"name","role"]}]
 
+    },
+    {
+        model:View,
+        attributes:['id',"blogId","UserId"]
     }
     ]});
     if(!blog){return next(createError(400,'blog not found...'))}
     
-    res.json({success:true,message:blog})
+    let userId=undefined;
+    if(req.user){
+        userId=req.user.id
+    }
+    const view= await View.create({UserId:userId,blogId:id,ipAddress:ip});
+    await view.save();
+    
+    res.json({success:true,message:blog,views:blog.Views.length})
 })
 
 // user can search with blog
@@ -68,7 +80,7 @@ const searchBlog=expressAsyncHandler( async(req,res,next)=>{
     
     let order=[['createdAt', 'DESC']];
     if(req.query.order==0){
-        order=[]
+        order=[]  
     }
     let blog= await Blog.findAll({
         order,
@@ -79,7 +91,7 @@ const searchBlog=expressAsyncHandler( async(req,res,next)=>{
                 {tags:{[Op.iLike]:`%${title}%`}}],
         isApproved:true,
     },offset:skip,
-    limit});
+    limit,include:{model : View,attributes:["id"]}});
     const count=await Blog.findAndCountAll();
     if(!blog){return next(createError(400,'blog not found...'))}
     res.json({success:true,message:blog,total:count.count});
@@ -92,8 +104,6 @@ const updateBlog=expressAsyncHandler( async (req,res,next)=>{
 
     const blog=await Blog.findByPk(Number(id));
     if(!blog){return next(createError(400,"blog not found !!"))}
-    
-    console.log(req.body)
     blog.title= req.body.title || blog.title;
     blog.description=req.body.description || blog.description;
     blog.tags=req.body.tags || blog.tags
@@ -115,20 +125,19 @@ const deleteBlog=expressAsyncHandler(async(req,res,next)=>{
         if(err){return next(createError(400,"Problem in deleting images.."))}
         console.log("deleted images")
     })
-    
+   
     await blog.destroy();
     await blog.save();
     res.status(200).json({success:true,message:"Blog deleted successfully!!"})
-    
-})
+  
+}) 
 
 const updateCoverImage=expressAsyncHandler(async(req,res,next)=>{
     const {id}=req.params;
  if(!id){return next(createError(400,"id is required..."))}
  let blog=await Blog.findByPk(id);
  if(!blog){return next(createError(400,"blog not found !!"))}
- console.log(req.file)
- console.log(req.body)
+
  const cover_image=req.file.filename;   
  if(!cover_image){return next(createError(400,"cover image is required !!"))}
 

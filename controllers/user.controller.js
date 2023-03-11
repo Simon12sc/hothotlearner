@@ -9,6 +9,7 @@ import generator from "generate-password";
 
 const createUser=expressAsyncHandler(async(req,res,next)=>{
     const {name,email,password}=req.body;
+    var ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     if(!name){return next(createError(400,"name is required !!"))}
     if(!email){return next(createError(400,"email is required !!"))}
     if(!password){return next(createError(400,"password is required !!"))}
@@ -20,7 +21,7 @@ const createUser=expressAsyncHandler(async(req,res,next)=>{
     if(isEmail){return next(createError(400,"email already exist !!"))}
 
 
-    const user=await User.create({name,email,password});
+    const user=await User.create({name,email,password,ipAddress});
     sendToken(user.dataValues,200,res);
 })
 
@@ -67,6 +68,11 @@ const getUser=expressAsyncHandler(async(req,res,next)=>{
 
 const logout=expressAsyncHandler(async (req,res,next)=>{
     res.status(200).cookie("token","").json({success:true,message:"logout successful"})
+})
+
+//delete my account
+const deleteUser=expressAsyncHandler(async(req,res,next)=>{
+    
 })
 
 //get my info

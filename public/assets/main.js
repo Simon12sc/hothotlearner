@@ -1,4 +1,4 @@
-import { getAgo, hideLoading, showLoading } from "./utils.js";
+import { getAgo, hideLoading, returnViews, showLoading } from "./utils.js";
 
 let tog=false;
         const blogShower=document.getElementsByClassName("blogShower")[0]
@@ -178,12 +178,11 @@ function categorySearch(data){
             contentBox.innerHTML="<h1 style=`color:red;`>loading....</h1>"
             if(data.length===0){return contentBox.innerHTML="<h1 style=`color:red;`>No result found !!</h1>";}
             contentBox.innerHTML=" ";
-        
             data.forEach(element => {
                 contentBox.innerHTML+=`<div class="blog" blog_id="${element.id}">
                     <div class="blog_cover" style="background-image:url('/image/${element.cover_image}');">
                     </div>
-                    <label for="date">${getAgo(element.createdAt)}</label> <a id="newPage" href="/blog/${element.id}/${element.title}" >view in new page</a>
+                    <label for="date">${getAgo(element.createdAt)}</label><label>${ returnViews(element.Views.length)} <i class="fa-solid fa-eye"></i></label> <a id="newPage" href="/blog/${element.id}/${element.title}" >view in new page</a>
                     <div class="blog_bottom">
                     <h1>${element.title}</h1>
                     <h2>${element.shortDescription}</h2> 

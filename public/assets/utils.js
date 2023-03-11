@@ -62,3 +62,13 @@ function agoDate({ year, date, month, hour, minute, second }) {
     export function hideLoading(){
       document.querySelector("#loading").style.display="none"
     }
+
+    export function returnViews(number){
+      if(number>=1000000){
+        return `${Math.round(number/1000000)} m`;
+      }else if(number>=1000){
+        return number/1000+" k";
+      }else{
+        return number;
+      }
+    }
