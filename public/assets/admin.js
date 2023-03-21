@@ -190,7 +190,10 @@ document.querySelector("#searchBlogButton").onclick=()=>{
     searchBlog(document.querySelector("#searchBlogPageInput").value)
 }
 let dateUl=document.querySelector("#blogDateList")
+let dateUlOfUser=document.querySelector("#userDateList")
 searchBlog(1);
+searchUser(1);
+
 async function searchBlog(nextPage){
               dateUl.innerHTML="Loading...."
             const keyword=document.querySelector("#searchBlogInput");
@@ -201,6 +204,18 @@ async function searchBlog(nextPage){
                 return alert(data.error)
             }
             showBlog(data.message);
+        }
+
+async function searchUser(nextPage){
+              dateUlOfUser.innerHTML="Loading...."
+            const keyword=document.querySelector("#searchUserInput");
+            const order=document.querySelector("#userOrder");
+            let res=await fetch(`/api/user/all/${nextPage}/15/search?title=${keyword.value}&order=${order.value}`);
+            let data=await res.json();
+            if(!data.success){    
+                return alert(data.error)
+            }
+            showUser(data.message);
         }
         
         function showBlog(blog){
@@ -238,6 +253,33 @@ async function searchBlog(nextPage){
             const blogId=button.getAttribute("blogId")
             const blogTitle=button.getAttribute("blogTitle")
             button.onclick=()=>{editBlog(blogId,blogTitle)}
+        })
+
+        }
+        function showUser(user){
+            dateUlOfUser.innerHTML=" "
+            user.forEach(data => {
+                dateUlOfUser.innerHTML+=` 
+            <div class="blogListElement">
+                <div class="bleLeft" style="background-image:url('${data.avatar||"https://picsum.photos/200/200"}')">
+                </div>
+                <div class="bleRight">
+                  <p>${data.createdAt.split("T")[0]}</p>
+                  <h1>${data.name} (${data.email}) - ${data.role} - verified= ${data.isActivated}</h1>
+                  <div class="bleButtonSection">
+                    <button class="deleteButtonForUser" userId="${data.id}" userTitle="${data.name}">Delete</button>
+                    <button class="editButton" userId="${data.id}">edit</button>
+                    <button class="imageUpdateButton" userId="${data.id}" userTitle="${data.name}">update image</button>
+                    
+                  </div>
+                </div>
+            </div>`
+            
+            });
+         Array.from(document.querySelectorAll(".deleteButtonForUser")).forEach((button)=>{
+          const userId=button.getAttribute("userId")
+          const userTitle=button.getAttribute("userTitle")
+          button.onclick=()=>{deleteUser(userId,userTitle)}
         })
 
         }
@@ -345,6 +387,20 @@ if(!deleteBlog){return}
                     return alert(result.error)
                 }
                 searchBlog(1)
+                return alert(result.message)
+       }
+
+
+       async function deleteUser(userId){
+        const deleteUser=confirm("are you sure want to delete a blog??")
+if(!deleteUser){return}
+                const data= await fetch(`/api/user/deleteAccount/${userId}`,{method:'delete'})
+                const pendingResult=await data.json();
+                const result=await pendingResult;
+                if(!result.success){
+                    return alert(result.error)
+                }
+                searchUser(1)
                 return alert(result.message)
        }
 

@@ -6,6 +6,8 @@ import sendMail from "../utils/sendMail.js";
 import sendToken from "../utils/sendToken.js";
 import bcrypt from "bcryptjs";
 import generator from "generate-password";
+import bannedUser from "../models/bannedUser.model.js";
+import { Op } from "sequelize";
 
 const createUser=expressAsyncHandler(async(req,res,next)=>{
     const {name,email,password}=req.body;
@@ -33,22 +35,40 @@ const loginUser=expressAsyncHandler(async(req,res,next)=>{
     const isMatched=await bcrypt.compare(password,user.password);
     if(!isMatched){return next(createError(400,"wrong password..."))};
     
+    let isBan=await bannedUser.findOne({where:{userId:user.id}});
+    if(isBan){return next (createError(401,"Your id is banned !! sorry"))}
     sendToken(user,200,res);
 
 })
 
 //admin
 const getAllUser=expressAsyncHandler(async(req,res,next)=>{
+    const title=req.query.title || "";
+    const page=req.params.page || 1;
+    const limit=req.params.limit || 10;
+    const skip=(page-1)*limit;
     
-    const users=await User.findAll({include:Blog});
+    let order=[['createdAt', 'DESC']];
+    if(req.query.order==0){
+        order=[]  
+    }
     
-    const user=users.map((data)=>{
+    let user= await User.findAll({
+        order,
+        attributes:["id","name","email","createdAt","avatar","role","isActivated"],
+        where:{
+            [Op.or]:[
+                {name:{[Op.iLike]:`%${title}%`}}]
+    },offset:skip,
+    limit});
+    if(!user){return next(createError(400,'user not found...'))}
+    const count=await User.findAndCountAll();
+    const users=user.map((data)=>{
         const {password,...user}=data.dataValues;
         return user;
-})
-    
-    res.status(200).json({sucess:true,message:user});
-
+    })
+    res.json({success:true,message:users,total:count.count}); 
+   
 })
 
 //user
@@ -152,6 +172,17 @@ export const changePassword=expressAsyncHandler(async(req,res,next)=>{
     await user.save();
     res.status(200).json({success:true,message:"password has been changed !!"});
 })
+
+//delete account
+
+const deleteAccount=expressAsyncHandler(async(req,res,next)=>{
+    const id=req.params.id;
+    if(!id){return next(createError(404,"id is required to delete account"))}
+    const isIdExist=await User.findByPk(id);
+    if(!isIdExist){return next(createError(404,"Account not found..."))}
+    await isIdExist.destroy();
+    res.status(200).json({success:true,message:"user deleted successfully..."})
+})
 //verify account
 const verifyAccount=expressAsyncHandler(async(req,res,next)=>{
     const {email}=req.body;
@@ -242,5 +273,38 @@ const forgotPassword= expressAsyncHandler(async(req,res,next)=>{
     };
 })
 
+const banTheUser=expressAsyncHandler(async(req,res,next)=>{
+    const userId=req.body.userId;
+    const userExist=await bannedUser.findOne({where:{userId}});
+    if(userExist){return next(createError(400,"user already banned !1"))}
+    const userEmail=req.body.email;
+    if(!userId){return next(createError(401,"user id is required..."))}
+    if(!userEmail){return next(createError(401,"user email is required..."))}
+    const banUser=await bannedUser.create({userId,email:userEmail});
+    return res.status(200).json({success:true,message:banUser});
+})
 
-export {createUser,getAllUser,getUser,loginUser,logout,myInfo,verifyAccount,approveVerifyAccount,forgotPassword};
+const getBannedUser=expressAsyncHandler(async(req,res,next)=>{
+
+    let user= await bannedUser.findOne({where:{userId:req.params.id}});
+if(!user){return next(createError(400,"user not found"))}
+       return res.status(200).json({success:true,message:user});
+})
+const getAllBannedUser=expressAsyncHandler(async(req,res,next)=>{
+
+let page=req.params.page || 1;
+let limit=req.params.skip || 10;
+const skip=(page-1) * limit;
+
+  const user=await bannedUser.findAll({offset:skip,limit}); 
+    return res.status(200).json({success:true,message:user});
+    
+
+})
+const removeFromBan=expressAsyncHandler(async(req,res,next)=>{
+    const userId=req.body.userId;
+    const user=await bannedUser.destroy({where:{userId:userId}});
+    if(!user){return next(createError(404,"user not found..."))}
+    res.status(200).json({success:true,message:"user unbanned !!"})
+})
+export {createUser,getAllUser,getUser,loginUser,logout,myInfo,verifyAccount,approveVerifyAccount,forgotPassword,banTheUser,removeFromBan,getBannedUser,getAllBannedUser,deleteAccount};

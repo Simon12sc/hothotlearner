@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Responsiive Admin Dashboard | CodingLab </title>
+    <title> Admin Dashboard | hot hot learner </title>
     <%-include('./partials/admin.css.ejs')%>
     
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
@@ -13,7 +13,7 @@
   <div class="sidebar">
     <div class="logo-details">
       <i class='bx bxl-c-plus-plus'></i>
-      <span class="logo_name">CodingLab</span>
+      <span class="logo_name">hot hot learner</span>
     </div>
       <ul class="nav-links">
         <li>
@@ -25,7 +25,13 @@
         <li>
           <a href="#createArea">
             <i class='bx bx-box' ></i>
-            <span class="links_name">Create</span>
+            <span class="links_name">Create Blog</span>
+          </a>
+        </li>
+        <li>
+          <a href="#userArea">
+            <i class='bx bx-box' ></i>
+            <span class="links_name">Users</span>
           </a>
         </li>
         
@@ -57,10 +63,7 @@
           <div class="right-side">
             <div class="box-topic">Total Blogs</div>
             <div class="number">5</div>
-            <div class="indicator">
-              <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
-            </div>
+            
           </div>
           <i class='bx bx-book-open cart'></i>
         </div>
@@ -68,10 +71,6 @@
           <div class="right-side">
             <div class="box-topic">Total Users</div>
             <div class="number">1</div>
-            <div class="indicator">
-              <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
-            </div>
           </div>
           <i class='bx bxs-user cart two' ></i>
         </div>
@@ -79,10 +78,7 @@
           <div class="right-side">
             <div class="box-topic">comments</div>
             <div class="number">$12</div>
-            <div class="indicator">
-              <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
-            </div>
+            
           </div>
           <i class='bx bx-cart cart three' ></i>
         </div>
@@ -109,6 +105,8 @@
           </div>
           
           <%-include('./partials/createBlog')%>
+          <label id="userArea"></label>
+          <%-include('./partials/userArea')%>
 <!-- image preview -->
 <div class="dim">
 

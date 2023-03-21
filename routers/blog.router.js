@@ -2,7 +2,7 @@ import express from "express"
 import { createBlog, deleteBlog, getAllBlogs, getBlog, searchBlog, updateBlog, updateCoverImage } from "../controllers/blog.controller.js";
 const blogRouter=express.Router();
 import multer from "multer";
-import { isAuthenticatedUser } from "../middlewares/auth.middleware.js";
+import { authorizeRoles, isAuthenticatedUser } from "../middlewares/auth.middleware.js";
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -16,12 +16,12 @@ const storage = multer.diskStorage({
   
   const upload = multer({ storage: storage })
 
-  blogRouter.post("/create", isAuthenticatedUser,upload.single("cover_image"),createBlog);
-blogRouter.post("/coverImage/:id",upload.single("cover_image"),updateCoverImage);
-blogRouter.post("/:id",updateBlog);
+  blogRouter.post("/create",isAuthenticatedUser,authorizeRoles("admin"),upload.single("cover_image"),createBlog);
+blogRouter.post("/coverImage/:id",isAuthenticatedUser,authorizeRoles("admin"),upload.single("cover_image"),updateCoverImage);
+blogRouter.post("/:id",isAuthenticatedUser,authorizeRoles("admin"),updateBlog);
 blogRouter.get("/:page/:limit/search",searchBlog);
 blogRouter.get("/:page/:limit",getAllBlogs);
 blogRouter.get("/:id",getBlog);
-blogRouter.delete("/:id",deleteBlog);
+blogRouter.delete("/:id",isAuthenticatedUser,authorizeRoles("admin"),deleteBlog);
 
 export default blogRouter;

@@ -2,6 +2,7 @@ import createError from "../errors/createError.js";
 import jwt from "jsonwebtoken";
 import expressAsyncHandler from "express-async-handler";                                                
 import User from "../models/user.model.js";
+import bannedUser from "../models/bannedUser.model.js";
 
 const isAuthenticatedUser=expressAsyncHandler(async (req,res,next)=>{
  const {token}=req.cookies;
@@ -15,6 +16,10 @@ if(!decodeData){
 }
 const users =(await User.findByPk(decodeData.id));
 if(!users){return next(createError(401,"please login to access the resources"))}
+const isBan=await bannedUser.findOne({where:{userId:users.id}});
+if(isBan){
+        return next(createError(404,"Your id is banned !! sorry"))
+        }
 const {password,...user}=users.dataValues;
 req.user=user;
 
@@ -29,4 +34,5 @@ const authorizeRoles=(...Roles)=>{
          next()
     }
 }
+
 export {isAuthenticatedUser,authorizeRoles};

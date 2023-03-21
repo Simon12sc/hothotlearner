@@ -44,15 +44,10 @@ const getBlog=expressAsyncHandler( async (req,res,next)=>{
     var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const id=req.params.id;
     if(!id){return next(createError(400,'blog not found...'))}
-    let blog=await Blog.findByPk(id,{where:{isApproved:true},include:[{
-        model:User,
-        attributes:['id',"name","role"]
-    },
-    {
-        model:Comment,
-        include:[{model:User,attributes:['id',"name","role"]}]
-
-    },
+    let blog=await Blog.findByPk(id,{where:{isApproved:true},include:[
+        {
+        model:User,attributes:['id',"name","role"]
+        },
     {
         model:View,
         attributes:['id',"blogId","UserId"]

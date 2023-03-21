@@ -64,7 +64,7 @@ function categorySearch(data){
             let data=await res.json();
             hideLoading()
             toggleBlogShower.click();
-              
+              console.log(data)
             blogShower.innerHTML=`
             <section>
     
@@ -92,7 +92,7 @@ function categorySearch(data){
                 <div class="blog_title">
                 <h1>${data.message.title}</h1>
                 <p>${getAgo( data.message.createdAt)}</p>
-                    <p>by ${data.message.User.name}-${data.message.User.role}</p>
+                    <p>by ${data.message.User?data.message.User.name:"Unknown"}-${data.message.User?data.message.User.role:"Unknown"}</p>
                     <div class="blog_main_cover" style="background-image:url('/image/${data.message.cover_image}');">
                         
                     </div>

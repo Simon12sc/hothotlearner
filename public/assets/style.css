@@ -526,7 +526,7 @@
         margin: 10px 0px;
 
       }
-
+      
       .delete-button {
         background-color: #ff0000; /* Red color */
         color: #ffffff; /* White text */
@@ -656,3 +656,14 @@
             padding:0px;
         }
       }
+
+      .deleteButtonForUser{
+        background-color: #ff0000; /* Red color */
+        color: #ffffff; /* White text */
+        border: none; /* No border */
+        border-radius: 5px;
+        height: 20px;
+         /* Padding */
+        cursor: pointer; /* Change cursor on hover */
+
+    }
