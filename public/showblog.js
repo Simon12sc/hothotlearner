@@ -1,3 +1,5 @@
+import { recommendVideo } from "/utils.js";
+import { getAgo, hideLoading, returnViews, showLoading } from "/utils.js";
 
 
 let tog=false;
@@ -25,10 +27,10 @@ function categorySearch(data){
 showBlog(Number(document.getElementById("id").innerText));
 
 async function showBlog(id){
-    console.log(id)
+    showLoading();
     let res=await fetch(`/api/blog/${id}`);
     let data=await res.json();
-      
+    hideLoading();
     blogShower.innerHTML=`
     <section>
 
@@ -41,11 +43,13 @@ async function showBlog(id){
                        <div class="comment_list">
                            
                            </div>
+                           <form id="commentForm">
                            <div class="comment_area">
-                           <button id="refreshComment">Refresh</button><br>
+                           <button type="button" id="refreshComment">Refresh</button><br>
                            <input type="text" placeholder="type here..." class="comment_input"/>
-                           <button class="commentBTN">comment</button>
-                       </div>
+                           <button class="commentBTN" type="submit">comment</button>
+                           </div>
+                           </form>
                            </div>
                            
                            </section>
@@ -54,7 +58,7 @@ async function showBlog(id){
         <div class="blog_title">
         <h1>${data.message.title}</h1>
         <p>${getAgo( data.message.createdAt)}</p>
-            <p>by ${data.message.User.name}-${data.message.User.role}</p>
+            <p>by ${data.message.User?data.message.User.name:"Unknown"}-${data.message.User?data.message.User.role:"Unknown"}</p>
             <div class="blog_main_cover" style="background-image:url('/image/${data.message.cover_image}');">
                 
             </div>
@@ -64,7 +68,11 @@ async function showBlog(id){
             ${data.message.description}
         </div>
     </div>`
-    document.getElementsByClassName("commentBTN")[0].onclick=()=>{addComment(id)}
+
+    document.getElementById("commentForm").onsubmit=(e)=>{
+        e.preventDefault();
+        addComment(id)
+    }
     document.getElementById("refreshComment").onclick=()=>{showComments(id)}
     showComments(id);
 }
@@ -77,8 +85,7 @@ async function addComment(id){
     let data={message:comment_input.value.toString(),blogId:id}
 
     const res=await fetch("/api/comment/create",{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"application/json"}});
-    const result=await res.json()
-
+    const result=await res.json();
     if(!result.success){return alert(result.error)}
     showComments(id);
     comment_input.value=""
@@ -172,55 +179,9 @@ async function isLoggedIn(){
     }
 }
 
+recommendVideo(document.getElementsByClassName("slider")[0],"All");
 
 
-function agoDate({ year, date, month, hour, minute, second }) {
-    let now = new Date();
-    let year1 = now.getUTCFullYear();
-    let date1 = now.getUTCDate();
-    let month1 = now.getUTCMonth() + 1;
-    let minute1 = now.getUTCMinutes();
-    let hour1 = now.getUTCHours();
-    let second1 = now.getUTCSeconds();
-    let agoYear = Math.abs(year1 - year);
-    let agoDate = Math.abs(date1 - date);
-    let agoMonth = Math.abs(month1 - month);
-    let agoMinute = Math.abs(minute1 - minute);
-    let agoHour = Math.abs(hour1 - hour);
-    let agoSecond = Math.abs(second1 - second)
-    if (agoYear >= 1) {
-      return agoYear + "y ago";
-    } else if (agoMonth >= 1) {
-      return agoMonth + "m ago";
-    } else if (agoDate >= 1) {
-      return agoDate + "d ago";
-    } else if (agoHour >= 1) {
-      return agoHour + "h ago";
-    } else if (agoMinute >= 1) {
-      return agoMinute + "m ago";
-    } else {
-      return agoSecond + "s ago"
-    }
-  }
-  
-  function dateSpliter(fullDate) {
-    let a = fullDate.split("T")[0].split("-");
-    let year = Number(a[0])
-    let month = Number(a[1])
-    let date = Number(a[2])
-  
-    let b = fullDate.split("T")[1].split(":");
-    let hour = Number(b[0]);
-    let minute = Number(b[1]);
-    let second = Number(b[2].split(".")[0])
-  
-    return { year, month, date, hour, minute, second }
-  }
-  
-  function getAgo(fullDate){
-  let uploadedTime = dateSpliter(fullDate);
-  return agoDate(uploadedTime)
-  }
-  
+
 
 isLoggedIn();

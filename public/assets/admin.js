@@ -334,9 +334,7 @@ async function updateBlog(){
                 console.log(err)
             }
         }
-        
-
-
+         
         function updateBlogImage(blogId,blogTitle){
 
      document.querySelector(".dim").style.display="block";
@@ -353,7 +351,6 @@ async function updateBlog(){
      document.querySelector(".updateImage1").onclick=()=>{
          updateImage(blogId,blogTitle)
     }
-    
 }
 
 
@@ -392,7 +389,7 @@ if(!deleteBlog){return}
 
 
        async function deleteUser(userId){
-        const deleteUser=confirm("are you sure want to delete a blog??")
+        const deleteUser=confirm("are you sure want to delete user??")
 if(!deleteUser){return}
                 const data= await fetch(`/api/user/deleteAccount/${userId}`,{method:'delete'})
                 const pendingResult=await data.json();

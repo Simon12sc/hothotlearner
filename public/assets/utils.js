@@ -72,3 +72,46 @@ function agoDate({ year, date, month, hour, minute, second }) {
         return number;
       }
     }
+
+
+    export async function recommendVideo(elem,category){
+      let nextPage=1
+      let res=await fetch(`/api/blog/${nextPage}/15/search?title=${category}&order=${1}`);
+      const data=await res.json();
+console.log(data)
+        elem.innerHTML="<h1 style=`color:red;`>loading....</h1>"
+        if(data.message.length===0){return elem.innerHTML="<h1 style=`color:red;`>No result found !!</h1>";}
+        elem.innerHTML=" ";
+        data.message.forEach(element => {
+            elem.innerHTML+=`<div class="blog" blog_id="${element.id}">
+                <div class="blog_cover" style="background-image:url('/image/${element.cover_image}');">
+                </div>
+                <label for="date">${getAgo(element.createdAt)}</label><label>${ returnViews(element.Views.length)} <i class="fa-solid fa-eye"></i></label> <a id="newPage" href="/blog/${element.id}/${element.title}" >view in new page</a>
+                <div class="blog_bottom">
+                <h1>${element.title}</h1>
+                <h2>${element.shortDescription}</h2> 
+                </div>
+                </div>
+                `
+            });
+            
+            Array.from(document.getElementsByClassName("blog")).forEach(element => {
+            // console.log(element.attributes["blog_id"].value)
+            element.onclick=()=>showBlog(element.attributes["blog_id"].value)
+        });
+    }
+
+repeatFinder([1,1,2,3,5,6,2,1,])
+  function repeatFinder(arr){
+
+  // for(let i=0;i<arr.length;i++){
+  //   for(let j=0;j<arr.length;i++){
+  //     console.log(arr[j]===arr[i]);
+  //   }
+  // }
+  for(let i=0;i<arr.length;i++){
+    for(let j=0;j<arr.length;j++){
+    }
+  }
+  }
+    

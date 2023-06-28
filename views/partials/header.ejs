@@ -1,24 +1,37 @@
+<style>
+      .categoryList{
+          background: #3f83e9;
+          color: white;
+            border-radius: 5px;
+            padding:5px 10px;
+            margin: 0px 10px;
+        }
+        .header_bottom{
+            padding: 5px;
+            overflow-x:scroll;
+            overflow-y: hidden;
+        }
+        .categoryList:hover{
+            background: #5e98f0;
+            cursor: pointer;
+        }
+        .header_bottom::-webkit-scrollbar{
+            background-color: white;
+            height: 5px;
+        }
+</style>
 <header>
-    <%-include('fixNav.ejs');%>
-    <div class="header_bottom">
-        
-        <nav>
-            <ul>
-                    <li>
-                        <a href="#end">about us</a>
 
-                    </li>
-                        <li>
-                            <a href="#end">contact us</a>
-                        </li>
-                        <li>
-                            <a href="#end">Motive of page</a>
-                        </li>
-                        
-                            <button class="login_button" >login</button>
-                            <button class="logout_button">logout</button>
-                        
-                </ul>
-            </nav>
+    <%-include('fixNav.ejs');%>
+    <div class="header_bottom" >
+        <ul>
+            <div class="categoryList">All</div>
+            <div class="categoryList">life</div>
+            <div class="categoryList">education</div>
+            <div class="categoryList">school</div>
+            <div class="categoryList">work</div> 
+            <div class="categoryList">competition</div> 
+        </ul>
+        
         </div>
 </header>

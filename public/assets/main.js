@@ -55,16 +55,13 @@ function categorySearch(data){
                 tog=false;
             }
         }
-
-
-        
+       
         async function showBlog(id){
             showLoading()
             let res=await fetch(`/api/blog/${id}`);
             let data=await res.json();
             hideLoading()
             toggleBlogShower.click();
-              console.log(data)
             blogShower.innerHTML=`
             <section>
     
@@ -110,8 +107,6 @@ function categorySearch(data){
             document.getElementById("refreshComment").onclick=()=>{showComments(id)}
             showComments(id);
         }
-
-
 
         async function addComment(id){
             const comment_input=document.getElementsByClassName("comment_input")[0];
